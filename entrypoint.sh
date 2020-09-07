@@ -7,7 +7,7 @@ if [[ -z "$GITHUB_WORKSPACE" ]]; then
   exit 1
 fi
 
-cd "${GITHUB_WORKSPACE}/src"
+cd "${GITHUB_WORKSPACE}/hugo"
 
 hugo version
 hugo $1
@@ -20,7 +20,7 @@ rsync --version
 sh -c "
 rsync $2 \
   -e 'ssh -i ${HOME}/.ssh/id_rsa_deploy -o StrictHostKeyChecking=no' \
-  ${GITHUB_WORKSPACE}/src/public \
+  ${GITHUB_WORKSPACE}/hugo/public \
   ${VPS_DEPLOY_USER}@${VPS_DEPLOY_HOST}:${VPS_DEPLOY_DEST}
 "
 
