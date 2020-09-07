@@ -7,14 +7,24 @@ if [[ -z "$GITHUB_WORKSPACE" ]]; then
   exit 1
 fi
 
-cd "${GITHUB_WORKSPACE}/hugo"
-
-hugo version
-hugo $1
-
+echo "Setting up ssh key"
 mkdir "${HOME}/.ssh"
 echo "${VPS_DEPLOY_KEY}" > "${HOME}/.ssh/id_rsa_deploy"
 chmod 600 "${HOME}/.ssh/id_rsa_deploy"
+
+cd "${GITHUB_WORKSPACE}/hugo"
+
+echo "Building website"
+hugo version
+hugo $1
+
+echo "Syncing website to ${VPS_DEPLOY_HOST}"
+echo "
+rsync $2 \
+  -e 'ssh -i ${HOME}/.ssh/id_rsa_deploy -o StrictHostKeyChecking=no' \
+  ${GITHUB_WORKSPACE}/hugo/public \
+  ${VPS_DEPLOY_USER}@${VPS_DEPLOY_HOST}:${VPS_DEPLOY_DEST}
+"
 
 sh -c "
 rsync $2 \
