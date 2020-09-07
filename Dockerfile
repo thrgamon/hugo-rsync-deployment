@@ -15,7 +15,8 @@ LABEL "homepage"="https://ronvanderheijden.nl/"
 RUN apk add --no-cache --upgrade --no-progress \
         hugo \
         openssh \
-        rsync
+        rsync \
+        curl
 
 ADD entrypoint.sh /
 RUN chmod +x /entrypoint.sh
