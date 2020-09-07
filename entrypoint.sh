@@ -17,11 +17,9 @@ echo "${VPS_DEPLOY_KEY}" > "${HOME}/.ssh/id_rsa_deploy"
 chmod 600 "${HOME}/.ssh/id_rsa_deploy"
 
 rsync --version
-sh -c "
 rsync $2 \
   -e 'ssh -i ${HOME}/.ssh/id_rsa_deploy -o StrictHostKeyChecking=no' \
   ${GITHUB_WORKSPACE}/hugo/public \
   ${VPS_DEPLOY_USER}@${VPS_DEPLOY_HOST}:${VPS_DEPLOY_DEST}
-"
 
 exit 0
